@@ -1,0 +1,23 @@
+reset;
+set Columns := {1..9};
+set Rows := {1..9};
+set Values := {1..9};
+
+param a{Rows, Columns, Values} default 0;
+
+var x{Rows, Columns, Values} binary;
+
+minimize z: 0;
+
+s.t.
+	r1 {i in Rows, k in Values}: sum{j in Columns} (x[i,j,k] + a[i,j,k]) = 1;
+	r2 {j in Columns, k in Values}: sum{i in Rows} (x[i,j,k] + a[i,j,j]) = 1;
+
+
+let x[1,2,6] := 6;
+
+
+option solver cplex;
+option cplex_options "mipdisplay 5";
+
+solve
