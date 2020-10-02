@@ -11,13 +11,14 @@ minimize z: 0;
 
 s.t.
 	r1 {i in Rows, k in Values}: sum{j in Columns} (x[i,j,k] + a[i,j,k]) = 1;
-	r2 {j in Columns, k in Values}: sum{i in Rows} (x[i,j,k] + a[i,j,j]) = 1;
-
-
-let x[1,2,6] := 6;
-
+	r2 {j in Columns, k in Values}: sum{i in Rows} (x[i,j,k] + a[i,j,k]) = 1;
+	r3 {i in Rows, j in Columns}: sum{k in Values} (x[i,j,k] + a[i,j,k]) = 1;
+	r4 {c in 0..2, d in 0..2, k in Values}: sum{i in 1..3} sum {j in 1..3} (x[i + c*3, j + d*3, k] + a[i + c*3, j + d*3, k]) = 1;
+data data.dat
 
 option solver cplex;
 option cplex_options "mipdisplay 5";
 
-solve
+solve;
+
+display {i in Rows, j in Columns, k in Values : x[i,j,k]};
