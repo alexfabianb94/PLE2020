@@ -7,4 +7,4 @@ El acertijo lógico japonés mundialmente conocido, Sudoku, se compone de una cu
 <img src="https://github.com/alexfabianb94/Practica-Opt-Redes/blob/master/Clase%203/img/sudoku.png" />
 
 ## Ejercicio 2
-Implementar el modelo del [VRPTW](https://pdfs.semanticscholar.org/3aaa/a16ab53cf30c378fdb7c911fe0de39ee8997.pdf) empleando el lenguaje AMPL
+Implementar el modelo del [TSP](https://github.com/alexfabianb94/Practica-PLE-2020/blob/main/Practica-1/doc/tsp.pdf) empleando el lenguaje AMPL
