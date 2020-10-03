@@ -1,0 +1,27 @@
+reset;
+
+param n := 10;
+
+set N := {1..n};
+set A := {i in N, j in N: i != j};
+
+param xcoord{N} := round(Uniform(-100, 100));
+param ycoord{N} := round(Uniform(-100, 100));
+
+param c{(i,j) in A} := round(sqrt((xcoord[i] - xcoord[j])^2 + (ycoord[i] - ycoord[j])^2));
+
+var x{A} binary;
+
+minimize z: sum {(i,j) in A} c[i,j]*x[i,j];
+s.t.
+	r1 {j in N}: sum {(i,j) in A} x[i,j] = 1;
+	r2 {i in N}: sum {(i,j) in A} x[i,j] = 1;
+
+option solver cplex;
+
+option cplex_option "mipdisplay 5";
+
+solve;
+
+display {(i,j) in A : x[i,j]};
+
