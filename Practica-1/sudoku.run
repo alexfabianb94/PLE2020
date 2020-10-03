@@ -1,4 +1,5 @@
 reset;
+
 set Columns := {1..9};
 set Rows := {1..9};
 set Values := {1..9};
@@ -13,12 +14,19 @@ s.t.
 	r1 {i in Rows, k in Values}: sum{j in Columns} (x[i,j,k] + a[i,j,k]) = 1;
 	r2 {j in Columns, k in Values}: sum{i in Rows} (x[i,j,k] + a[i,j,k]) = 1;
 	r3 {i in Rows, j in Columns}: sum{k in Values} (x[i,j,k] + a[i,j,k]) = 1;
-	r4 {c in 0..2, d in 0..2, k in Values}: sum{i in 1..3} sum {j in 1..3} (x[i + c*3, j + d*3, k] + a[i + c*3, j + d*3, k]) = 1;
-data data.dat
+	r4 {m in 0..2, n in 0..2, k in Values}: sum{i in 1..3} sum {j in 1..3} (x[i + 3*m, j + 3*n, k] + a[i + 3*m, j + 3*n, k]) = 1;
+
+data sudoku.dat
 
 option solver cplex;
 option cplex_options "mipdisplay 5";
 
 solve;
 
-display {i in Rows, j in Columns, k in Values : x[i,j,k]};
+for {i in Rows} {
+	for {j in Columns, k in Values} {
+		if x[i,j,k] == 1 || a[i,j,k] == 1 then	
+			printf " %d",k;
+	}
+	printf "\n";
+}
