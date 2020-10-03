@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[lmargin=2.5cm,rmargin=2.5cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{lmodern}
+\usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{mathtools}
+
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+
+\title{El problema del vendedor viajero}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\section{Formulación MTZ}
+\subsection{Conjuntos}
+$N$ = Conjunto de nodos\\
+$A$ = Conjunto de arcos
+\subsection{Parámetros}
+$c_{ij}$ = costo asociado al arco $(i,j)$\\
+$d$ = nodo de origen
+\subsection{Variables}
+\begin{flushleft}
+\[x_{ij}={\begin{cases}1&{\mbox{si el arco $(i,j)$ se encuentra en el tour}}\\0&{\mbox{en caso contrario}}\end{cases}}
+\]
+\[t_{i} = \mbox{posicion en que se recorre el nodo i en el tour}\]
+\end{flushleft}
+\subsection{Formulación matemática}
+\begin{equation}
+min \sum_{(i,j) \in A} c_{ij} \cdot x_{ij}
+\end{equation}
+Sujeto a : \begin{align}
+& \sum_{(i,j) \in A} x_{ij} = 1 &\forall j \in N \\
+& \sum_{(i,j) \in A} x_{ij} = 1 &\forall i \in N \\
+& t_{j} \geq t_{i} + 1 - |N| \cdot (1 - x_{ij}) & \forall (i,j) \in A, j \neq d\\
+& t_{d} = 0\\
+& x_{ij} \in \{0,1\} &\forall (i,j) \in A\\
+& t_{i} \in \mathbb{Z}^{+}_{0} &\forall i \in N
+\end{align}
+\end{document}
+
+
