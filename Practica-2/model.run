@@ -1,0 +1,68 @@
+reset;
+
+param nproductos;
+param nplantas;
+param nperiodos;
+param nciudades;
+param nbodegas;
+
+
+set L := {1..nproductos};
+set I := {1..nplantas};
+set T := {1..nperiodos};
+set J := {1..nciudades};
+set K := {1..nbodegas};
+
+param S{I,T};
+param P{L};
+param D{L,J,T};
+param F{K,T};
+param Q{K};
+
+param xcoordI{I} := round(Uniform(-100,100));
+param ycoordI{I} := round(Uniform(-100,100));
+
+param xcoordK{K} := round(Uniform(-100,100));
+param ycoordK{K} := round(Uniform(-100,100));
+
+param xcoordJ{J} := round(Uniform(-100,100));
+param ycoordJ{J} := round(Uniform(-100,100));
+
+# param M{L,I,K,T} default 10;
+# param N{L,K,J,T} default 10;
+
+param M{L, i in I, k in K,T} := sqrt((xcoordI[i] - xcoordK[k])^2 + (ycoordI[i] - ycoordK[k])^2);
+param N{L, k in K, j in J,T} := sqrt((xcoordJ[j] - xcoordK[k])^2 + (ycoordJ[j] - ycoordK[k])^2);
+
+var x{L,I,K,T} >= 0;
+var y{L,K,J,T} >= 0;
+var a{K,T} binary;
+
+minimize z: sum{l in L, i in I, k in K, t in T} M[l,i,k,t]*x[l,i,k,t] + sum{l in L, k in K, j in J, t in T} N[l,k,j,t]*y[l,k,j,t] + sum{k in K, t in T} F[k,t]*a[k,t] + sum{l in L, i in I, k in K, t in T} P[l]*x[l,i,k,t];
+
+s.t.
+    r1 {i in I, t in T}: sum{l in L, k in K} x[l,i,k,t] <= S[i,t];
+    r2 {l in L, j in J, t in T}: sum{k in K} y[l,k,j,t] = D[l,j,t];
+    r3 {k in K, t in T}: sum{l in L, i in I} x[l,i,k,t] <= Q[k]*a[k,t];
+    r4 {l in L, k in K, t in T}: sum {i in I} x[l,i,k,t] = sum {j in J} y[l,k,j,t];
+    
+    
+    
+    
+data data.dat;
+option solver cplex;
+option cplex_options "mipdisplay=5";
+
+solve;
+
+for {l in L, i in I, k in K, t in T}{
+    if x[l,i,k,t] >= 1 then
+        printf "x[%d,%d,%d,%d] = %d\n",l,i,k,t,x[l,i,k,t];
+
+}
+
+for {l in L, k in K, j in J, t in T}{
+    if y[l,k,j,t] >= 1 then
+        printf "y[%d,%d,%d,%d] = %d\n",l,k,j,t,y[l,k,j,t];
+
+}
