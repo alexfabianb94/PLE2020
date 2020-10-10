@@ -6,7 +6,6 @@ param nperiodos;
 param nciudades;
 param nbodegas;
 
-
 set L := {1..nproductos};
 set I := {1..nplantas};
 set T := {1..nperiodos};
@@ -46,9 +45,6 @@ s.t.
     r3 {k in K, t in T}: sum{l in L, i in I} x[l,i,k,t] <= Q[k]*a[k,t];
     r4 {l in L, k in K, t in T}: sum {i in I} x[l,i,k,t] = sum {j in J} y[l,k,j,t];
     
-    
-    
-    
 data data.dat;
 option solver cplex;
 option cplex_options "mipdisplay=5";
@@ -64,5 +60,4 @@ for {l in L, i in I, k in K, t in T}{
 for {l in L, k in K, j in J, t in T}{
     if y[l,k,j,t] >= 1 then
         printf "y[%d,%d,%d,%d] = %d\n",l,k,j,t,y[l,k,j,t];
-
 }
