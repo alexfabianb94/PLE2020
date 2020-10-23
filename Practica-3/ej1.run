@@ -2,7 +2,6 @@ reset;
 
 option solver cplex;
 
-
 var x1 binary;
 var x2 binary;
 var x3 binary;
