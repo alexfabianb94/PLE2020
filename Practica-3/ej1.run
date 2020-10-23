@@ -1,0 +1,28 @@
+reset;
+
+option solver cplex;
+
+
+var x1 binary;
+var x2 binary;
+var x3 binary;
+
+r1: x1 <= x2;
+
+printf "----------------------------------------------------------------------------------------\n";
+
+expand;
+fix x1 := 0;
+fix x2 := 0;
+fix x3 := 0;
+display x1;
+display x2;
+display x3;
+
+solve;
+
+unfix x1;
+unfix x2;
+unfix x3;
+
+printf "----------------------------------------------------------------------------------------\n";
