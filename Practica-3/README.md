@@ -113,7 +113,7 @@ Suponga que $x_1$, $x_2$ y $x_3$ son variables binarias cuyo valor 1 indica que 
 
 10. Si se abre la planta 1 o la planta 2 entonces se debe abrir la planta 3.
 
-|$x_1$|$x_2$|$x_3$|\\[x_1 \land x_2 \implies x_3\\]|
+|$x_1$|$x_2$|$x_3$|\\[x_1 \lor x_2 \implies x_3\\]|
 |-----|-----|-----|:------------------------------:|
 |F|F|F|T|
 |F|F|T|T|
@@ -126,7 +126,7 @@ Suponga que $x_1$, $x_2$ y $x_3$ son variables binarias cuyo valor 1 indica que 
 
 11. Si se abre la planta 1 o la planta 2 entonces no se debe abrir la planta 3.
 
-|$x_1$|$x_2$|$x_3$|$x_3'$|\\[x_1 \lor x_2 \implies x_3\\]|
+|$x_1$|$x_2$|$x_3$|$x_3'$|\\[x_1 \lor x_2 \implies x_3'\\]|
 |-----|-----|-----|------|:-----------------------------:|
 |F|F|F|T|T|
 |F|F|T|F|T|
