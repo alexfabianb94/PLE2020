@@ -137,4 +137,4 @@ Suponga que $x_1$, $x_2$ y $x_3$ son variables binarias cuyo valor 1 indica que 
 |T|T|F|T|T|
 |T|T|T|F|F|
 
-[1]: https://es.wikipedia.org/wiki/L%C3%B3gica_proposicional#Formas_de_argumentos_b%C3%A1sicas_y_derivadas
+[1]: https://en.wikipedia.org/wiki/Logical_equivalence
