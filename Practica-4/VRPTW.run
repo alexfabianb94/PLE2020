@@ -1,0 +1,126 @@
+reset;
+
+param n := 10;
+param ncamiones := 4;
+
+set V := {0..n+1};
+set A := {i in V, j in V : i != j};
+set N := {1..n};
+set K := {1..ncamiones};
+
+param E := 0;
+param L := 500;
+param a{V} := E;
+param b{V} := L;
+
+param d{V} default 0;
+param s{V} := 0;
+
+let {i in N} d[i] := 1;
+
+param xcoord{V};
+param ycoord{V};
+
+let {i in N union {0}} xcoord[i] := round(Uniform(-100,100));
+let {i in N union {0}} ycoord[i] := round(Uniform(-100,100));
+let xcoord[n+1] := xcoord[0];
+let ycoord[n+1] := ycoord[0];
+
+param c{(i,j) in A} := round(sqrt((xcoord[i] - xcoord[j])^2 + (ycoord[i] - ycoord[j])^2));
+param t{(i,j) in A} := c[i,j];
+
+param C := 3;
+
+var x{A,K} binary;
+var w{V,K} >= 0;
+
+minimize Z1: sum {k in K, (i,j) in A} c[i,j] * x[i,j,k];
+s.t.
+	r2 {i in N}: sum {k in K, (i,j) in A} x[i,j,k] = 1;
+	r3 {k in K}: sum {(0,j) in A} x[0,j,k] = 1;
+	r4 {k in K, j in N}: sum {(i,j) in A} x[i,j,k] - sum {(j,i) in A} x[j,i,k] = 0;
+	r5 {k in K}: sum {(i,n+1) in A} x[i,n+1,k] = 1;
+	r6 {k in K, (i,j) in A}: w[i,k] + s[i] + t[i,j] - w[j,k] <= (1 - x[i,j,k])*L;	
+	r7L {k in K, i in N}: a[i]*(sum {(i,j) in A} x[i,j,k]) <= w[i,k];
+	r7U {k in K, i in N}: w[i,k] <= b[i]*(sum {(i,j) in A} x[i,j,k]);
+	r8 {k in K, i in {0, n+1}}: E <= w[i,k] <= L;
+	r9 {k in K}: sum {i in N} d[i] * (sum {(i,j) in A} x[i,j,k]) <= C;
+
+
+option solver gurobi;
+option gurobi_options "outlev 1";
+
+solve;
+
+display {(i,j) in A, k in K: x[i,j,k]};
+display w;
+
+param color symbolic := "#BCED09";
+param forma symbolic := "ellipse";
+param archivo_grafico symbolic default "grafo.gml";
+
+printf "graph\n[\n\thierarchic 1\n\tdirected 1\n" > (archivo_grafico);
+
+for {i in V}
+{
+
+
+	printf "	node\n\t[\
+		id	%d\
+		graphics\
+		[\
+			x	%f\
+			y	%f\
+			w	%f\
+			h	%f\
+			type	\x22%s\x22\
+			fill	\x22%s\x22\
+		]\
+		LabelGraphics\
+		[\
+			text	\x22%d\x22\
+			fontSize	%d\
+		]\
+	]\n\n",
+		i,
+		5*xcoord[i],
+		5*ycoord[i],
+		50,
+		50,
+		forma,
+		color,
+		i,
+		20 > (archivo_grafico);
+}
+
+
+for {(i,j) in A, k in K}
+{
+	if x[i,j,k] >= 0.9 then
+	{
+			printf "	edge\n\t[\
+		source	%d\
+		target	%d\
+		graphics\
+		[\
+			fill	\x22#000000\x22\
+			targetArrow	\x22standard\x22\
+		]\
+	]\n\n",
+			i,
+			j > (archivo_grafico);
+	}
+}
+
+close archivo_grafico;
+
+
+
+
+
+
+
+
+
+
+
