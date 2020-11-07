@@ -1,0 +1,24 @@
+reset;
+option randseed 10;
+
+param n := 10;
+
+set items := {1..n};
+
+param v{items} := round(Uniform(1,100));
+param w{items} := round(Uniform(1,100));
+param W := 0.6 * (sum {i in items} w[i]);
+
+var x{items} binary;
+
+maximize Z: sum {i in items} v[i] * x[i]; 
+s.t.
+	r1: sum{i in items} w[i] * x[i] <= W;
+
+option solver gurobi;
+option gurobi_options 'outlev 1';
+option auxfiles rc;
+solve;
+
+display x;
+write mmodelo;
