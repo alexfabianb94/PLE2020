@@ -21,4 +21,4 @@ option auxfiles rc;
 solve;
 
 display x;
-write mmodelo;
+write mmodelo_ampl;
