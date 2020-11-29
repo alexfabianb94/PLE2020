@@ -1,0 +1,30 @@
+reset;
+
+option randseed 110;
+
+param n := 10;
+
+set N := {1..n};
+set A := {i in N, j in N};
+
+param xcoord{N} := round(Uniform(-100,100));
+param ycoord{N} := round(Uniform(-100,100));
+param c{(i,j) in A} := sqrt((xcoord[i] - xcoord[j])^2 + (ycoord[i] - ycoord[j])^2);
+
+param p := 3;
+param S := 30;
+
+var x{N} binary;
+var y{N} binary;
+
+maximize z1: sum{i in N} x[i];
+s.t.
+	r1: sum {i in N} y[i] = p;
+	r2 {i in N}: x[i] <= sum{j in N : c[i,j] <= S} y[j];
+option solver gurobi;
+option gurobi_options 'outlev 1';
+
+solve;
+
+display x;
+display y;

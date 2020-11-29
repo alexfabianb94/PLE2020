@@ -1,0 +1,89 @@
+reset;
+
+option randseed 110;
+
+param n := 10;
+
+set N := {1..n};
+set A := {i in N, j in N};
+
+param xcoord{N} := round(Uniform(-100,100));
+param ycoord{N} := round(Uniform(-100,100));
+param c{(i,j) in A} := sqrt((xcoord[i] - xcoord[j])^2 + (ycoord[i] - ycoord[j])^2);
+
+param p := 3;
+
+var x{A} binary;
+var y{N} binary;
+
+minimize z1: sum{(i,j) in A} c[i,j] * x[i,j];
+s.t.
+	r1{i in N}: sum{(i,j) in A} x[i,j] = 1;
+	r2 {(i,j) in A}: x[i,j] <= y[j];
+	r3: sum {i in N} y[i] = p;
+option solver gurobi;
+option gurobi_options 'outlev 1';
+
+solve;
+
+display {(i,j) in A: x[i,j]};
+
+param color symbolic := "#BCED09";
+param forma symbolic := "ellipse";
+param archivo_grafico symbolic default "grafo.gml";
+
+printf "graph\n[\n\thierarchic 1\n\tdirected 1\n" > (archivo_grafico);
+
+for {i in N}
+{
+
+
+	printf "	node\n\t[\
+		id	%d\
+		graphics\
+		[\
+			x	%f\
+			y	%f\
+			w	%f\
+			h	%f\
+			type	\x22%s\x22\
+			fill	\x22%s\x22\
+		]\
+		LabelGraphics\
+		[\
+			text	\x22%d\x22\
+			fontSize	%d\
+		]\
+	]\n\n",
+		i,
+		5*xcoord[i],
+		5*ycoord[i],
+		50,
+		50,
+		forma,
+		color,
+		i,
+		20 > (archivo_grafico);
+}
+
+
+for {(i,j) in A}
+{
+	if x[i,j] >= 0.9 then
+	{
+			printf "	edge\n\t[\
+		source	%d\
+		target	%d\
+		graphics\
+		[\
+			fill	\x22#000000\x22\
+			targetArrow	\x22standard\x22\
+		]\
+	]\n\n",
+			i,
+			j > (archivo_grafico);
+	}
+}
+
+close archivo_grafico;
+
