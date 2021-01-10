@@ -1,0 +1,6 @@
+# Práctica 8
+## Ejercicio N°1
+Una empresa de Telecomunicaciones se ha propuesto el desafío de alcanzar la cobertura total de señal telefónica en todas las ciudades del país. Para lograr este objetivo, requiere localizar nuevas antenas de telefonía en distintos lugares geográficos, a lo largo de todo su territorio. La empresa considera localizar tres tipos de antenas con distintas tecnologías y diferentes precios, las antenas GSM, antenas UMTS y antenas LTE. Estos dispositivos ofrecen un radio de cobertura de $S_1$ , $S_2$ y $S_3$ , respectivamente. Se dispone del grafo extendido $G = (N,A)$, donde $N$ representa el conjunto de ciudades y $A$ el conjunto de arcos. Los costos de localización de las antenas GSM, UMTS y LTE son $c_1$ , $c_2$ y $c_3$ , respectivamente. La distancia entre las ciudades $i$ y $j$ se denota por $d_{ij}$ , con $(i,j) \in A$. Formule un modelo de programación lineal entera que permita minimizar los costos de localización, considerando que cada ciudad debe estar cubierta por alguna antena y que todas las ciudades son candidatas a localizar cualquier tipo de antena.
+
+1. Formular un modelo de programación lineal entera mixta el problema
+2. Implementar el modelo en el lenguaje AMPL

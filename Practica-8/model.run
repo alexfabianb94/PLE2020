@@ -1,0 +1,49 @@
+reset;
+
+model model.mod;
+option randseed 110;
+
+option solver gurobi;
+option gurobi_options 'outlev 1';
+
+solve;
+
+display y;
+
+param color symbolic := "#BCED09";
+param forma symbolic := "ellipse";
+param archivo_grafico symbolic default "grafo.gml";
+
+printf "graph\n[\n\thierarchic 1\n\tdirected 1\n" > (archivo_grafico);
+
+for {i in N}
+{
+	printf "	node\n\t[\
+		id	%d\
+		graphics\
+		[\
+			x	%f\
+			y	%f\
+			w	%f\
+			h	%f\
+			type	\x22%s\x22\
+			fill	\x22%s\x22\
+		]\
+		LabelGraphics\
+		[\
+			text	\x22%d\x22\
+			fontSize	%d\
+		]\
+	]\n\n",
+		i,
+		5*xcoord[i],
+		5*ycoord[i],
+		50,
+		50,
+		forma,
+		color,
+		i,
+		20 > (archivo_grafico);
+}
+
+close archivo_grafico;

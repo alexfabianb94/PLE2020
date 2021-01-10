@@ -11,7 +11,6 @@ param xcoord{N} := round(Uniform(-100,100));
 param ycoord{N} := round(Uniform(-100,100));
 param c{(i,j) in A} := sqrt((xcoord[i] - xcoord[j])^2 + (ycoord[i] - ycoord[j])^2);
 
-param p := 3;
 param S := 50;
 
 var y{N} binary;
